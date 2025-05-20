@@ -1,0 +1,14 @@
+{
+  "name": "ghzhost-electron-app",
+  "version": "1.0.0",
+  "description": "GHZHost Electron Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^28.1.0"
+  }
+} 

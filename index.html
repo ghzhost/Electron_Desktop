@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>.:: GhzhHost Desktop APP ::.</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .tabs {
+            display: flex;
+            background-color: #000a20;
+            padding: 10px;
+            position: relative;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #00233f;
+            margin-right: 5px;
+            background-color: #00233f;
+            transition: all 0.3s ease;
+            position: relative;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        .tab:hover {
+            background-color: #00547f;
+            border-color: #00b2e8;
+        }
+        .tab.active {
+            background-color: #00b2e8;
+            color: #000a20;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            width: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+        .close-tab {
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .online {
+            background-color: #00b2e8;
+        }
+        .offline {
+            background-color: #ff0000;
+        }
+        .content-container {
+            flex: 1;
+            background-color: #fff;
+            position: relative;
+        }
+        .dialog-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 10, 32, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .dialog-box {
+            background-color: #00233f;
+            border: 2px solid #00b2e8;
+            border-radius: 8px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dialog-title {
+            color: #00b2e8;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .dialog-message {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .dialog-button {
+            background-color: #00b2e8;
+            color: #000a20;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .dialog-button:hover {
+            background-color: #00547f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="tabs" id="tabsContainer">
+        <div class="status-indicator" id="statusIndicator"></div>
+        <div class="tab active" data-url="https://ghzhost.com/" onclick="switchTab(this)">Home</div>
+        <div class="tab" data-url="https://mcp.ghzhost.com/" onclick="switchTab(this)">MCP</div>
+        <div class="tab" data-url="https://gcp.ghzhost.com/" onclick="switchTab(this)">GCP</div>
+        <div class="tab" data-url="https://wcp-s1br.ghzhost.com/" onclick="switchTab(this)">WCP</div>
+    </div>
+
+    <div class="content-container" id="contentContainer">
+    </div>
+
+    <div class="dialog-overlay" id="dialogOverlay">
+        <div class="dialog-box">
+            <div class="dialog-title">Sem Conexão com a Internet</div>
+            <div class="dialog-message">
+                Não foi possível conectar à internet. Por favor, verifique sua conexão e tente novamente.
+            </div>
+            <button class="dialog-button" onclick="hideDialog()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        const statusIndicator = document.getElementById('statusIndicator');
+        const contentContainer = document.getElementById('contentContainer');
+        const dialogOverlay = document.getElementById('dialogOverlay');
+        let currentTab = null;
+
+        function showDialog() {
+            dialogOverlay.style.display = 'flex';
+        }
+
+        function hideDialog() {
+            dialogOverlay.style.display = 'none';
+        }
+
+        // Função para carregar a página inicial
+        async function loadHomePage() {
+            const homeTab = document.querySelector('.tab[data-url="https://ghzhost.com/"]');
+            await switchTab(homeTab);
+        }
+
+        // Carregar a página inicial assim que o documento estiver pronto
+        document.addEventListener('DOMContentLoaded', loadHomePage);
+
+        // Também tentar carregar imediatamente
+        loadHomePage();
+
+        async function switchTab(tabElement) {
+            // Se clicou na mesma aba, não faz nada
+            if (currentTab === tabElement) return;
+
+            // Restaurar a aba anterior se existir
+            if (currentTab) {
+                currentTab.classList.remove('active');
+            }
+
+            // Atualizar a aba atual
+            currentTab = tabElement;
+            currentTab.classList.add('active');
+
+            // Load the new tab content
+            const url = tabElement.getAttribute('data-url');
+            await window.electronAPI.loadTab(url);
+        }
+
+        // Listen for internet status updates
+        window.electronAPI.onInternetStatus((event, isOnline) => {
+            statusIndicator.className = `status-indicator ${isOnline ? 'online' : 'offline'}`;
+            if (!isOnline) {
+                showDialog();
+            }
+        });
+
+        // Initial internet check
+        window.electronAPI.checkInternet().then(isOnline => {
+            statusIndicator.className = `status-indicator ${isOnline ? 'online' : 'offline'}`;
+            if (!isOnline) {
+                showDialog();
+            }
+        });
+
+        // Listen for title updates
+        window.electronAPI.onTitleUpdate((event, title) => {
+            document.title = title;
+            // Update the active tab text
+            if (currentTab) {
+                currentTab.textContent = title;
+            }
+        });
+    </script>
+</body>
+</html> 
