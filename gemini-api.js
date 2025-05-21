@@ -29,7 +29,7 @@ Mantenha suas respostas:
 4. Precisas e diretas
 5. Úteis para usuários técnicos e não técnicos
 
-Se não souber algo específico sobre a GHZHost, mantenha a resposta genérica mas tecnicamente correta.`;
+Se não souber algo específico sobre a GhzHost, mantenha a resposta genérica mas tecnicamente correta.`;
 
 // Configuração do Express
 const app = express();
@@ -54,7 +54,7 @@ app.post('/api/chat', async (req, res) => {
             history: [
                 {
                     role: "user",
-                    parts: "Por favor, confirme suas instruções e papel como assistente da GHZHost."
+                    parts: "Por favor, confirme suas instruções e papel como assistente da GhzHost."
                 },
                 {
                     role: "model",
