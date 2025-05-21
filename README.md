@@ -35,7 +35,7 @@ Um aplicativo desktop elegante e moderno para acessar os serviços da GHZHost.
 
 1. Clone o repositório:
 ```bash
-git clone [URL_DO_REPOSITORIO]
+git clone [[URL_DO_REPOSITORIO]](https://github.com/ghzhost/Electron_Desktop)
 ```
 
 2. Instale as dependências:
