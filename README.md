@@ -14,7 +14,7 @@ Um aplicativo desktop elegante e moderno para acessar os serviços da GHZHost.
 ## Serviços Integrados
 
 - Home GHZHost
-- MCP (Management Control Panel)
+- MCP (Minecraft Control Panel)
 - GCP (Game Control Panel)
 - WCP (Web Control Panel)
 

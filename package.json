@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "dev": "nodemon --watch main.js --watch gemini-api.js --exec electron ."
   },
   "repository": {
     "type": "git",
@@ -21,9 +22,14 @@
   "author": "GHZHost Team",
   "license": "ISC",
   "dependencies": {
-    "electron": "^28.1.0"
+    "@google/generative-ai": "^0.1.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "electron": "^28.1.0",
+    "express": "^4.21.2"
   },
   "devDependencies": {
-    "electron-builder": "^24.9.1"
+    "electron-builder": "^24.9.1",
+    "nodemon": "^3.1.0"
   }
-} 
+}

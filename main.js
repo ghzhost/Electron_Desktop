@@ -1,10 +1,13 @@
 const { app, BrowserWindow, ipcMain, dialog, session, BrowserView } = require('electron');
 const path = require('path');
+const { startServer } = require('./gemini-api');
+require('dotenv').config();
 
 let mainWindow;
 let splashWindow;
 let currentView = null;
 let views = new Map();
+let server;
 
 function createSplashWindow() {
   splashWindow = new BrowserWindow({
@@ -23,7 +26,16 @@ function createSplashWindow() {
   splashWindow.center();
 }
 
-function createWindow() {
+async function createWindow() {
+  // Inicia o servidor Express
+  try {
+    server = await startServer(3000);
+  } catch (error) {
+    console.error('Erro ao iniciar servidor:', error);
+    app.quit();
+    return;
+  }
+
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -64,9 +76,17 @@ function createWindow() {
   });
 
   // Adicionar listener para redimensionamento da janela
-  mainWindow.on('resize', updateViewBounds);
-  mainWindow.on('maximize', updateViewBounds);
-  mainWindow.on('unmaximize', updateViewBounds);
+  mainWindow.on('resize', () => {
+    setTimeout(updateViewBounds, 100);
+  });
+
+  mainWindow.on('maximize', () => {
+    setTimeout(updateViewBounds, 100);
+  });
+
+  mainWindow.on('unmaximize', () => {
+    setTimeout(updateViewBounds, 100);
+  });
 
   // Check internet connection periodically
   setInterval(checkInternetConnection, 5000);
@@ -75,12 +95,15 @@ function createWindow() {
 function updateViewBounds() {
   if (currentView) {
     const bounds = mainWindow.getBounds();
-    const tabHeight = 60; // Altura aproximada da barra de abas
+    const tabHeight = 60;
+    const menuHeight = process.platform === 'darwin' ? 28 : 30;
+    
+    // Ajuste para garantir que o conteúdo fique dentro da área visível
     currentView.setBounds({
       x: 0,
       y: tabHeight,
       width: bounds.width,
-      height: bounds.height - tabHeight
+      height: bounds.height - (tabHeight + menuHeight + 2) // +2 para margem de segurança
     });
   }
 }
@@ -88,8 +111,8 @@ function updateViewBounds() {
 function createBrowserView(url) {
   const view = new BrowserView({
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
+      nodeIntegration: true,
+      contextIsolation: false,
       webSecurity: false,
       allowRunningInsecureContent: true
     }
@@ -97,31 +120,80 @@ function createBrowserView(url) {
 
   mainWindow.addBrowserView(view);
   
-  // Calcular as dimensões da view
   const bounds = mainWindow.getBounds();
-  const tabHeight = 60; // Altura aproximada da barra de abas
+  const tabHeight = 60;
+  const menuHeight = process.platform === 'darwin' ? 28 : 30;
+
+  // Ajuste para garantir que o conteúdo fique dentro da área visível
   view.setBounds({
     x: 0,
     y: tabHeight,
     width: bounds.width,
-    height: bounds.height - tabHeight
+    height: bounds.height - (tabHeight + menuHeight + 2) // +2 para margem de segurança
   });
 
-  // Carregar a URL
-  view.webContents.loadURL(url);
+  if (url.endsWith('.html')) {
+    view.webContents.loadFile(url);
+    view.webContents.setZoomFactor(1.0);
+    
+    view.webContents.on('dom-ready', () => {
+      // Ajusta o zoom para garantir que todo o conteúdo seja visível
+      view.webContents.setZoomFactor(1.0);
+      
+      view.webContents.insertCSS(`
+        html, body {
+          width: 100% !important;
+          height: 100% !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          overflow: hidden !important;
+        }
+        #app {
+          width: 100% !important;
+          height: 100% !important;
+          display: flex !important;
+          flex-direction: column !important;
+          position: relative !important;
+          overflow: hidden !important;
+        }
+        .chat-container {
+          flex: 1 1 auto !important;
+          overflow-y: auto !important;
+          padding-bottom: 80px !important;
+          height: calc(100% - 60px) !important;
+        }
+        #messageInput {
+          min-width: 100px !important;
+          max-width: calc(100% - 100px) !important;
+        }
+      `);
 
-  // Listen for title updates
+      // Força recálculo do layout com um pequeno delay
+      setTimeout(() => {
+        view.webContents.invalidate();
+      }, 100);
+    });
+
+    // Adiciona listener para ajustar o layout quando o conteúdo for carregado
+    view.webContents.on('did-finish-load', () => {
+      setTimeout(() => {
+        view.webContents.invalidate();
+        updateViewBounds();
+      }, 100);
+    });
+  } else {
+    view.webContents.loadURL(url);
+  }
+
   view.webContents.on('page-title-updated', (event, title) => {
     mainWindow.webContents.send('title-update', title);
   });
 
-  // Get title when page finishes loading
   view.webContents.on('did-finish-load', () => {
     const title = view.webContents.getTitle();
     if (title) {
       mainWindow.webContents.send('title-update', title);
     }
-    // Emit view-loaded event
     mainWindow.webContents.send('view-loaded');
   });
 
@@ -207,6 +279,9 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    if (server) {
+      server.close();
+    }
     app.quit();
   }
 });
