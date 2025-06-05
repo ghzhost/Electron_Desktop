@@ -1,0 +1,37 @@
+{
+  "name": "ghzhost-electron-app",
+  "version": "1.0.0",
+  "description": "GHZHost Electron Application - Desktop client for GHZHost services",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "dev": "nodemon --watch main.js --watch gemini-api.js --exec electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghzhost/ghzhost-desktop.git"
+  },
+  "keywords": [
+    "electron",
+    "ghzhost",
+    "desktop",
+    "hosting",
+    "control-panel"
+  ],
+  "author": "GHZHost Team",
+  "license": "ISC",
+  "dependencies": {
+    "@google/generative-ai": "^0.1.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "electron": "^28.1.0",
+    "express": "^4.21.2",
+    "lowdb": "^7.0.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "electron-builder": "^24.9.1",
+    "nodemon": "^3.1.0"
+  }
+}

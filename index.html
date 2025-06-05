@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>.:: GhzhHost Desktop VERSEWEB ::.</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #001d3a;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-color: #000a20;
+        }
+        .tabs {
+            display: flex;
+            background-color: transparent;
+            padding: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #00233f;
+            margin-right: 5px;
+            background-color: #00233f;
+            transition: all 0.3s ease;
+            position: relative;
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        .tab:hover {
+            background-color: #00547f;
+            border-color: #00b2e8;
+        }
+        .tab.active {
+            background-color: #00b2e8;
+            color: #000a20;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute;
+            width: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+        .close-tab {
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        .online {
+            background-color: #00b2e8;
+        }
+        .offline {
+            background-color: #ff0000;
+        }
+        .content-container {
+            flex: 1;
+            background-color: #000a20;
+            position: relative;
+            z-index: 1;
+        }
+        .dialog-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 10, 32, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .dialog-box {
+            background-color: #00233f;
+            border: 2px solid #00b2e8;
+            border-radius: 8px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dialog-title {
+            color: #00b2e8;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .dialog-message {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .dialog-button {
+            background-color: #00b2e8;
+            color: #000a20;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .dialog-button:hover {
+            background-color: #00547f;
+            color: white;
+        }
+
+        /* Loading styles */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000a20;
+            z-index: 2;
+        }
+
+        .loading-container {
+            text-align: center;
+            position: relative;
+        }
+
+        .loading-logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loading-text {
+            color: #00b2e8;
+            font-size: 18px;
+            margin-top: 20px;
+            letter-spacing: 2px;
+        }
+
+        .loading-progress {
+            width: 200px;
+            height: 4px;
+            background: #00233f;
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress::after {
+            content: '';
+            position: absolute;
+            left: -50%;
+            width: 50%;
+            height: 100%;
+            background: #00b2e8;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes loading {
+            0% { left: -50%; }
+            100% { left: 100%; }
+        }
+
+        /* Hide loading overlay when content is loaded */
+        .content-container.loaded .loading-overlay {
+            display: none;
+        }
+    </style>
+</head>
+<body style="margin:0;padding:0;overflow:hidden;">
+    <iframe src="https://verseweb.ghzhost.com/" style="border:none;width:100vw;height:100vh;position:fixed;top:0;left:0;z-index:1;" allowfullscreen></iframe>
+</body>
+</html> 
