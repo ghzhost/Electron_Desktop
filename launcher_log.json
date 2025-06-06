@@ -33,5 +33,19 @@
     "version": "1.0.0",
     "platform": "win32",
     "arch": "x64"
+  },
+  {
+    "timestamp": "2025-06-06T02:40:56.583Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  {
+    "timestamp": "2025-06-06T02:41:06.429Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
   }
 ]
