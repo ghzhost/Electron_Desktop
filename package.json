@@ -1,0 +1,56 @@
+{
+    "name": "ghzhost-verseweb-electron-app",
+    "version": "1.0.0",
+    "description": "Aplicativo Electron GhzHost VerseWEB - Cliente desktop para os serviços GhzHost VerseWEB",
+    "main": "main.js",
+    "scripts": {
+      "start": "electron .",
+      "build": "electron-builder",
+      "dev": "nodemon --watch main.js --watch gemini-api.js --exec electron ."
+    },
+    "keywords": [
+      "electron",
+      "ghzhost",
+      "verseweb",
+      "desktop",
+      "hospedagem",
+      "painel-de-controle"
+    ],
+    "author": "Equipe GhzHost VerseWEB",
+    "license": "ISC",
+    "dependencies": {
+      "@google/generative-ai": "^0.1.3",
+      "cors": "^2.8.5",
+      "dotenv": "^16.5.0",
+      "express": "^4.21.2",
+      "lowdb": "^7.0.1",
+      "uuid": "^11.1.0"
+    },
+    "devDependencies": {
+      "electron": "^28.1.0",
+      "electron-builder": "^24.9.1",
+      "nodemon": "^3.1.0"
+    },
+    "build": {
+      "appId": "com.ghzhost.verseweb.desktop",
+      "productName": "GhzHost VerseWEB Desktop",
+      "directories": {
+        "output": "dist"
+      },
+      "files": [
+        "**/*"
+      ],
+      "win": {
+        "target": ["nsis"],
+        "icon": "logo.png"
+      },
+      "nsis": {
+        "oneClick": false,
+        "allowToChangeInstallationDirectory": true,
+        "createDesktopShortcut": true,
+        "createStartMenuShortcut": true,
+        "shortcutName": "GhzHost VerseWEB Desktop"
+      }
+    }
+  }
+  

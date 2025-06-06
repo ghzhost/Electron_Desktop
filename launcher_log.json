@@ -1,0 +1,37 @@
+[
+  {
+    "timestamp": "2025-06-06T01:12:29.057Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  {
+    "timestamp": "2025-06-06T01:13:27.719Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  {
+    "timestamp": "2025-06-06T01:14:12.777Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  {
+    "timestamp": "2025-06-06T01:52:44.158Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  {
+    "timestamp": "2025-06-06T01:54:33.816Z",
+    "event": "launcher_start",
+    "version": "1.0.0",
+    "platform": "win32",
+    "arch": "x64"
+  }
+]
