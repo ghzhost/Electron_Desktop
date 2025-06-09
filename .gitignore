@@ -1,3 +1,34 @@
 mp-core-orig/
 tests/
+# Ignorar a pasta de dependências
 node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ambiente
+.env
+.env.*.local
+
+# Diretórios de build
+dist/
+build/
+
+# Cache
+.cache/
+.nyc_output/
+coverage/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDEs/editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
