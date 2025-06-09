@@ -149,6 +149,8 @@ function createMenu() {
     Menu.setApplicationMenu(menu);
 }
 
+
+
 // Este método será chamado quando o Electron terminar de inicializar
 app.whenReady().then(async () => {
     try {
