@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>.:: GHZ 💠VerseWeb ::.</title>
+</head>
+<body>
+    <script>
+        window.VWConfig = {
+            autoOpen: true,                                    
+            floatingButton: false,                             
+            worldID: 'custom-template',                       
+            'core.integration.template-file': {
+                templateID: 'mp.sunsetstore',                 
+                contentURL: './AlternativasdeBancodedados-UC9.verseweb',
+                // Performance optimizations
+                'performance.cache.enabled': true,
+                'performance.lazyLoad.enabled': true,
+                'performance.preload.enabled': true,
+                'performance.render.optimize': true,
+                'performance.memory.limit': 512, // MB
+                'performance.asset.priority': 'high',
+                
+                // Advanced rendering optimizations
+                'performance.render.quality': 'high',
+                'performance.render.fps': 60,
+                'performance.render.vsync': true,
+                'performance.render.antialiasing': true,
+                
+                // Resource management
+                'performance.resource.compression': true,
+                'performance.resource.optimize': true,
+                'performance.resource.pooling': true,
+                'performance.resource.cleanup': true,
+                
+                // Advanced caching
+                'performance.cache.strategy': 'aggressive',
+                'performance.cache.persistent': true,
+                'performance.cache.maxSize': 1024, // MB
+                
+                // Network optimizations
+                'performance.network.prefetch': true,
+                'performance.network.keepAlive': true,
+                'performance.network.timeout': 30000, // ms
+                
+                // Memory management
+                'performance.memory.gc': true,
+                'performance.memory.compact': true,
+                'performance.memory.threshold': 0.8, // 80% usage threshold
+                
+                // Asset loading
+                'performance.asset.bundle': true,
+                'performance.asset.streaming': true,
+                'performance.asset.concurrent': 4
+            },
+            'core.integration.webdav': {
+                // WebDAV configuration
+                url: 'http://localhost:3000/webdav/',
+                publicURL: 'http://localhost:3000/files/',
+                basePath: '',
+                
+                // Editor configuration
+                canEdit: true,
+                username: 'MyUser',
+                password: 'MyPass'
+            }
+        };
+
+        // Enhanced error handling with performance monitoring
+        window.addEventListener('error', function(e) {
+            console.error('Error:', e.message);
+            // Performance monitoring
+            if (window.performance && window.performance.memory) {
+                console.log('Memory Usage:', Math.round(window.performance.memory.usedJSHeapSize / 1048576), 'MB');
+            }
+        });
+
+        // Performance monitoring
+        if (window.performance) {
+            setInterval(() => {
+                const perf = window.performance;
+                if (perf.memory) {
+                    const usedHeap = Math.round(perf.memory.usedJSHeapSize / 1048576);
+                    const totalHeap = Math.round(perf.memory.totalJSHeapSize / 1048576);
+                    if (usedHeap > 400) { // Alert if using more than 400MB
+                        window.alert(`High memory usage: ${usedHeap} MB of ${totalHeap} MB`);
+                    }
+                }
+            }, 30000); // Check every 30 seconds
+        }
+    </script>
+    <script src="./plugins/ready_player_me/loader.js" fetchpriority="high"></script>
+    <script src='./plugins/_custom.js' fetchpriority="high"></script>
+    <script src='./core.js' fetchpriority="high"></script>
+ 
+</body>
+</html>
+
+
